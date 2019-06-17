@@ -5,11 +5,12 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ChurchConnectLite.Data.Data
 {
-    public class ChurchContext:IdentityDbContext
+    public class ChurchContext :IdentityDbContext<ApplicationUser>
     {
         public ChurchContext(DbContextOptions<ChurchContext> options)
             : base(options)
         {
+
         }
 
         public DbSet<Country> Countries { get; set; }

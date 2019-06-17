@@ -1,11 +1,8 @@
-﻿using Microsoft.AspNet.Identity.EntityFramework;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using Microsoft.AspNetCore.Identity;
 
 namespace ChurchConnectLite.Core.Entities
 {
-   public class ApplicationUser:IdentityUser
+    public class ApplicationUser: IdentityUser
     {
         public string ChurchName { get; set; }
 

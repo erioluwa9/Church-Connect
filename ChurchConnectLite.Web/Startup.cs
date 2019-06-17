@@ -39,9 +39,9 @@ namespace ChurchConnectLite.Web
             services.AddDbContext<ChurchContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
-            services.AddDefaultIdentity<ApplicationUser>()
-                .AddDefaultUI(UIFramework.Bootstrap4)
-                .AddEntityFrameworkStores<ChurchContext>();
+            services.AddIdentity<ApplicationUser, IdentityRole>()
+      .AddDefaultUI(UIFramework.Bootstrap4)
+  .AddEntityFrameworkStores<ChurchContext>().AddDefaultTokenProviders();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
@@ -64,6 +64,7 @@ namespace ChurchConnectLite.Web
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseCookiePolicy();
+
             app.UseAuthentication();
 
             app.UseMvc(routes =>
