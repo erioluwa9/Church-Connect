@@ -4,14 +4,16 @@ using ChurchConnectLite.Data.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace ChurchConnectLite.Data.Migrations
 {
     [DbContext(typeof(ChurchContext))]
-    partial class ChurchContextModelSnapshot : ModelSnapshot
+    [Migration("20190617182939_modelupdate")]
+    partial class modelupdate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -27,6 +29,8 @@ namespace ChurchConnectLite.Data.Migrations
                     b.Property<int>("AccessFailedCount");
 
                     b.Property<string>("ChurchName");
+
+                    b.Property<int?>("ChurchesID");
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken();
@@ -61,6 +65,8 @@ namespace ChurchConnectLite.Data.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("ChurchesID");
+
                     b.HasIndex("NormalizedEmail")
                         .HasName("EmailIndex");
 
@@ -85,8 +91,6 @@ namespace ChurchConnectLite.Data.Migrations
                     b.Property<string>("AccountNumber");
 
                     b.Property<string>("Address");
-
-                    b.Property<string>("ApplicationUserId");
 
                     b.Property<string>("BankName");
 
@@ -121,10 +125,6 @@ namespace ChurchConnectLite.Data.Migrations
                     b.Property<int?>("YearFounded");
 
                     b.HasKey("ID");
-
-                    b.HasIndex("ApplicationUserId")
-                        .IsUnique()
-                        .HasFilter("[ApplicationUserId] IS NOT NULL");
 
                     b.HasIndex("CountryId");
 
@@ -389,12 +389,15 @@ namespace ChurchConnectLite.Data.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
+            modelBuilder.Entity("ChurchConnectLite.Core.Entities.ApplicationUser", b =>
+                {
+                    b.HasOne("ChurchConnectLite.Core.Entities.Church", "Churches")
+                        .WithMany()
+                        .HasForeignKey("ChurchesID");
+                });
+
             modelBuilder.Entity("ChurchConnectLite.Core.Entities.Church", b =>
                 {
-                    b.HasOne("ChurchConnectLite.Core.Entities.ApplicationUser", "ApplicationUser")
-                        .WithOne("Churches")
-                        .HasForeignKey("ChurchConnectLite.Core.Entities.Church", "ApplicationUserId");
-
                     b.HasOne("ChurchConnectLite.Core.Entities.Country", "Country")
                         .WithMany("Churches")
                         .HasForeignKey("CountryId");
