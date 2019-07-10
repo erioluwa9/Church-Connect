@@ -10,11 +10,9 @@ namespace ChurchConnectLite.Core.Entities
 
         public string ApplicationUserId { get; set; }
         public string Name { get; set; }
+        public string LogoBlobName { get; set; }
 
         public string Logo { get; set; }
-        public string LogoBlobName { get; set; }
-        public DateTime? DateEntered { get; set; }
-
         public ApplicationUser AppUser { get; set; }
         public virtual ICollection<Church> Churches { get; set; }
     }

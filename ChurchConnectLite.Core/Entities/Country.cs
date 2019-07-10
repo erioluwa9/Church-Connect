@@ -9,6 +9,6 @@ namespace ChurchConnectLite.Core.Entities
         public int ID { get; set; }
         public string Name { get; set; }
         public ICollection<State> States { get; set; }
-        public ICollection<Church> Churches { get; set; }
+        //public ICollection<Church> Churches { get; set; }
     }
 }

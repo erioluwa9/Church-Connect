@@ -11,6 +11,6 @@ namespace ChurchConnectLite.Core.Entities
         public string Name { get; set; }
 
         public virtual Country Country { get; set; }
-        public virtual ICollection<Church> Churches { get; set; }
+        //public virtual ICollection<Church> Churches { get; set; }
     }
 }

@@ -17,10 +17,11 @@ namespace ChurchConnectLite.Core.Entities
         public string InstagramProfile { get; set; }
         public string Email { get; set; }
         public string Phone { get; set; }
+        public string PictureBlobName { get; set; }
         public string PictureUrl { get; set; }
         public DateTime DateEntered { get; set; }
         public ApplicationUser AppUser { get; set; }
         public  Church Church { get; set; }
-        public virtual ICollection<Image> Pictures { get; set; }
+        //public virtual ICollection<Image> Pictures { get; set; }
     }
 }

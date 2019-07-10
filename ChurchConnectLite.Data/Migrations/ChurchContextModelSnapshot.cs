@@ -90,7 +90,9 @@ namespace ChurchConnectLite.Data.Migrations
 
                     b.Property<string>("BankName");
 
-                    b.Property<int?>("CountryId");
+                    b.Property<int?>("ChurchSizeID");
+
+                    b.Property<string>("Country");
 
                     b.Property<int?>("DenominationId");
 
@@ -99,6 +101,8 @@ namespace ChurchConnectLite.Data.Migrations
                     b.Property<string>("Facebook");
 
                     b.Property<string>("Instagram");
+
+                    b.Property<string>("LogoBlobName");
 
                     b.Property<string>("LogoUrl");
 
@@ -110,9 +114,11 @@ namespace ChurchConnectLite.Data.Migrations
 
                     b.Property<string>("Phone2");
 
-                    b.Property<int?>("StateId");
+                    b.Property<string>("State");
 
                     b.Property<string>("Twitter");
+
+                    b.Property<int>("Visitor");
 
                     b.Property<string>("Website");
 
@@ -126,13 +132,26 @@ namespace ChurchConnectLite.Data.Migrations
                         .IsUnique()
                         .HasFilter("[ApplicationUserId] IS NOT NULL");
 
-                    b.HasIndex("CountryId");
+                    b.HasIndex("ChurchSizeID");
 
                     b.HasIndex("DenominationId");
 
-                    b.HasIndex("StateId");
-
                     b.ToTable("Churches");
+                });
+
+            modelBuilder.Entity("ChurchConnectLite.Core.Entities.ChurchSize", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Name");
+
+                    b.Property<string>("NumericDescription");
+
+                    b.HasKey("ID");
+
+                    b.ToTable("ChurchSizes");
                 });
 
             modelBuilder.Entity("ChurchConnectLite.Core.Entities.Country", b =>
@@ -156,8 +175,6 @@ namespace ChurchConnectLite.Data.Migrations
 
                     b.Property<string>("ApplicationUserId");
 
-                    b.Property<DateTime?>("DateEntered");
-
                     b.Property<string>("Logo");
 
                     b.Property<string>("LogoBlobName");
@@ -177,13 +194,13 @@ namespace ChurchConnectLite.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<decimal>("Amount");
+
                     b.Property<int>("ChurchId");
 
                     b.Property<string>("Email");
 
                     b.Property<string>("Message");
-
-                    b.Property<decimal>("MyProperty");
 
                     b.Property<int?>("ReferenceId");
 
@@ -208,6 +225,8 @@ namespace ChurchConnectLite.Data.Migrations
 
                     b.Property<int?>("ChurchId");
 
+                    b.Property<string>("FileName");
+
                     b.Property<int?>("MinisterId");
 
                     b.Property<string>("PictureUrl");
@@ -221,6 +240,48 @@ namespace ChurchConnectLite.Data.Migrations
                     b.HasIndex("MinisterId");
 
                     b.ToTable("Images");
+                });
+
+            modelBuilder.Entity("ChurchConnectLite.Core.Entities.MainMinister", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("About");
+
+                    b.Property<string>("ApplicationUserId");
+
+                    b.Property<int>("ChurchId");
+
+                    b.Property<DateTime>("DateEntered");
+
+                    b.Property<string>("Email");
+
+                    b.Property<string>("FaceBook");
+
+                    b.Property<string>("InstagramProfile");
+
+                    b.Property<string>("Name");
+
+                    b.Property<string>("Phone");
+
+                    b.Property<string>("PictureBlobName");
+
+                    b.Property<string>("PictureUrl");
+
+                    b.Property<string>("Position");
+
+                    b.Property<string>("Twitter");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("ApplicationUserId");
+
+                    b.HasIndex("ChurchId")
+                        .IsUnique();
+
+                    b.ToTable("MainMinisters");
                 });
 
             modelBuilder.Entity("ChurchConnectLite.Core.Entities.Minister", b =>
@@ -246,6 +307,8 @@ namespace ChurchConnectLite.Data.Migrations
                     b.Property<string>("Name");
 
                     b.Property<string>("Phone");
+
+                    b.Property<string>("PictureBlobName");
 
                     b.Property<string>("PictureUrl");
 
@@ -395,17 +458,13 @@ namespace ChurchConnectLite.Data.Migrations
                         .WithOne("Churches")
                         .HasForeignKey("ChurchConnectLite.Core.Entities.Church", "ApplicationUserId");
 
-                    b.HasOne("ChurchConnectLite.Core.Entities.Country", "Country")
+                    b.HasOne("ChurchConnectLite.Core.Entities.ChurchSize")
                         .WithMany("Churches")
-                        .HasForeignKey("CountryId");
+                        .HasForeignKey("ChurchSizeID");
 
                     b.HasOne("ChurchConnectLite.Core.Entities.Denomination", "Denominations")
                         .WithMany("Churches")
                         .HasForeignKey("DenominationId");
-
-                    b.HasOne("ChurchConnectLite.Core.Entities.State", "State")
-                        .WithMany("Churches")
-                        .HasForeignKey("StateId");
                 });
 
             modelBuilder.Entity("ChurchConnectLite.Core.Entities.Denomination", b =>
@@ -434,8 +493,20 @@ namespace ChurchConnectLite.Data.Migrations
                         .HasForeignKey("ChurchId");
 
                     b.HasOne("ChurchConnectLite.Core.Entities.Minister", "Minister")
-                        .WithMany("Pictures")
+                        .WithMany()
                         .HasForeignKey("MinisterId");
+                });
+
+            modelBuilder.Entity("ChurchConnectLite.Core.Entities.MainMinister", b =>
+                {
+                    b.HasOne("ChurchConnectLite.Core.Entities.ApplicationUser", "AppUser")
+                        .WithMany()
+                        .HasForeignKey("ApplicationUserId");
+
+                    b.HasOne("ChurchConnectLite.Core.Entities.Church", "Church")
+                        .WithOne("MainMinisters")
+                        .HasForeignKey("ChurchConnectLite.Core.Entities.MainMinister", "ChurchId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("ChurchConnectLite.Core.Entities.Minister", b =>

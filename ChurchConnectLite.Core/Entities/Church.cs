@@ -10,13 +10,19 @@ namespace ChurchConnectLite.Core.Entities
 
         public int? DenominationId { get; set; }
 
-        public int? StateId { get; set; }
+        public string ApplicationUserId { get; set; }
 
-        public int? CountryId { get; set; }
+        public string State { get; set; }
+
+        public string Country { get; set; }
+
+        public int Visitor { get; set; }
         public string Name   { get; set; }
-        public int? Year { get; set; }
+        public int? YearFounded { get; set; }
 
         public string About { get; set; }
+
+      
 
         public string Email { get; set; }
 
@@ -29,11 +35,12 @@ namespace ChurchConnectLite.Core.Entities
 
         public string LogoUrl { get; set; }
 
+        public string LogoBlobName { get; set; }
         public string Address { get; set; }
         public string OnlineServiceUrl { get; set; }
         
         // Bank Account Details
-        public string Account { get; set; }
+        public string BankName { get; set; }
 
         public string AccountName { get; set; }
 
@@ -49,18 +56,19 @@ namespace ChurchConnectLite.Core.Entities
 
         // Navigation Properties
 
-        public Country Country { get; set; }
-
-        public State State { get; set; }
+        public ApplicationUser ApplicationUser { get; set; }
+       
         public Denomination Denominations { get; set; }
 
+        public MainMinister MainMinisters { get; set; }
         public ICollection<Minister> Ministers { get; set; }
 
         public ICollection<Image> Gallery { get; set; }
 
         public ICollection<Donation> Donations { get; set; }
 
-        
+      
+
 
 
     }
